@@ -17,7 +17,7 @@ def notification():
     message = parseNotify(wish_book_data)
     app.logger.info(wish_book_data)
     response = slack_api.sendMessage(message, REQUESTED_CHANNEL)
-    app.logger.info(response)
+    app.logger.info(response.json())
     return 'registered'
 
 
@@ -36,4 +36,4 @@ if __name__ == '__main__':
     handler.setLevel(logging.INFO)
     app.logger.setLevel(logging.INFO)
     app.logger.addHandler(handler)
-    app.run()
+    app.run(debug=True, host='0.0.0.0')
