@@ -5,7 +5,7 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, request
 
 import slack_api
-from message_parser import parseNotify, parseEnrolled
+from message_template import parseNotify, parseEnrolled
 from settings import REQUESTED_CHANNEL, ENROLLED_CHANNEL
 
 app = Flask(__name__)
