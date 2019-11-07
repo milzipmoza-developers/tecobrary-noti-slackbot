@@ -26,3 +26,9 @@ def parseEnrolled(enrolled_book_data):
                                        author=enrolled_book_data['author'],
                                        publisher=enrolled_book_data['publisher'])
     return formatted_message
+
+
+def tecobraryInformation():
+    return '주인님, 안녕하세요.\n' \
+           '이용은 https://dgh7qtsxun9z8.cloudfront.net/\n' \
+           '에서 가능합니다. 좋은 하루 보내세요~ :heart_eyes:\n'
