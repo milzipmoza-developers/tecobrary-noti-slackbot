@@ -45,3 +45,21 @@ docker build -t tecobrary-slackbot:latest .
 ```
 docker run -e LC_ALL=C.UTF-8 -e SLACK_AUTH_TOKEN=[슬랙_토큰] -e REQUESTED_CHANNEL=[희망도서_요청_알림_채널_ID] -e ENROLLED_CHANNEL=[희망도서_도착_알림_채널_ID] -p 5000:5000 --name tecobrary-slackbot tecobrary-slackbot:latest &
 ```
+
+## slack bot mention event
+
+nginx setting
+
+```
+location /slackbot/ {
+    proxy_pass http://127.0.0.1:5000/;
+}
+```
+
+tecobrary server 에 요청 url 에 ``/slackbot`` 을 붙여서 요청을 보내면 됩니다.
+
+## slack bot settings
+
+1. event subscription 설정
+
+배포된 도메인의 ``/slackbot/infos`` 로 요청을 보내도록 event subscription 에 등록한다.
