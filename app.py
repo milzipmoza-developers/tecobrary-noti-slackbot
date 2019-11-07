@@ -2,10 +2,10 @@
 import logging
 from logging.handlers import RotatingFileHandler
 
-from flask import Flask, request
+from flask import Flask, request, make_response
 
 import slack_api
-from message_template import parseNotify, parseEnrolled
+from message_template import parseNotify, parseEnrolled, tecobraryInformation
 from settings import REQUESTED_CHANNEL, ENROLLED_CHANNEL
 
 app = Flask(__name__)
@@ -29,6 +29,30 @@ def enrolled():
     response = slack_api.sendMessage(message, ENROLLED_CHANNEL)
     app.logger.info(response.json())
     return 'enrolled'
+
+
+@app.route('/infos', methods=['GET', 'POST'])
+def urls():
+    # 메시지를 보낸다.
+    slack_event = request.get_json()
+    app.logger.info('slack_event', slack_event)
+    if "challenge" in slack_event:
+        return make_response(slack_event["challenge"], 200, {"content_type": "application/json"})
+    if "event" in slack_event:
+        event_type = slack_event["event"]["type"]
+        return event_handler(event_type, slack_event)
+    return make_response("event not found", 404, {"X-Slack-No-Retry": 1})
+
+
+def event_handler(event_type, slack_event):
+    if event_type == "app_mention":
+        channel = slack_event["event"]["channel"]
+        message = tecobraryInformation()
+        response = slack_api.sendMessage(message, channel)
+        app.logger.info(response.json())
+        return make_response("send mention message successfully", 200, {"content_type": "application/json"})
+    message = "cannot handle this event [%s]" % event_type
+    return make_response(message, 200, {"X-Slack-No-Retry": 1})
 
 
 if __name__ == '__main__':
