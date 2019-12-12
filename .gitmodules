@@ -1,0 +1,3 @@
+[submodule "settings-tecobrary-slack"]
+	path = settings-tecobrary-slack
+	url = https://github.com/MrKwon/settings-tecobrary-slack.git
